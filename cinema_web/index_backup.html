@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruslan Cinema</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b0b0f;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 18px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 15px 0 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #999;
+            margin-top: 7px;
+        }
+
+        .search {
+            width: 100%;
+            padding: 15px 18px;
+            border: none;
+            outline: none;
+            border-radius: 18px;
+            background: #19191f;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .search::placeholder {
+            color: #777;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin: 20px 0 12px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .button {
+            border: none;
+            color: white;
+            padding: 18px 10px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .red {
+            background: linear-gradient(135deg, #ff3b30, #b00020);
+        }
+
+        .blue {
+            background: linear-gradient(135deg, #007aff, #0047ab);
+        }
+
+        .purple {
+            background: linear-gradient(135deg, #af52de, #6a0dad);
+        }
+
+        .green {
+            background: linear-gradient(135deg, #34c759, #168c35);
+        }
+
+        .movie {
+            background: #17171d;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .movie h3 {
+            font-size: 18px;
+        }
+
+        .movie p {
+            color: #999;
+            margin-top: 7px;
+        }
+
+        .watch {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: #ffffff;
+            color: #000;
+            padding: 12px;
+            border-radius: 14px;
+            margin-top: 14px;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            color: #555;
+            margin-top: 35px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>🎬 Ruslan Cinema</h1>
+        <p>Фильмы и сериалы в одном месте</p>
+    </div>
+
+    <input
+        class="search"
+        type="text"
+        placeholder="🔎 Найти фильм или сериал..."
+    >
+
+    <h2 class="section-title">Категории</h2>
+
+    <div class="buttons">
+
+        <button class="button red">
+            🔥 Новинки
+        </button>
+
+        <button class="button blue">
+            🎬 Фильмы
+        </button>
+
+        <button class="button purple">
+            📺 Сериалы
+        </button>
+
+        <button class="button green">
+            ⭐ Избранное
+        </button>
+
+    </div>
+
+    <h2 class="section-title">Популярное</h2>
+
+    <div class="movie">
+
+        <h3>🎞 Водди Гургон</h3>
+
+        <p>
+            ⭐ 8.7/10 · Новый фильм
+        </p>
+
+        <a class="watch" href="#">
+            ▶️ Смотреть
+        </a>
+
+    </div>
+
+    <div class="movie">
+
+        <h3>🎬 Пример фильма</h3>
+
+        <p>
+            ⭐ 8.2/10 · Фильм
+        </p>
+
+        <a class="watch" href="#">
+            ▶️ Смотреть
+        </a>
+
+    </div>
+
+    <div class="footer">
+        © Ruslan Cinema
+    </div>
+
+</div>
+
+</body>
+</html>

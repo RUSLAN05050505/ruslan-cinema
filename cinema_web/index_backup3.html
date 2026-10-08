@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ruslan Cinema</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b0b0f;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            padding: 18px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 15px 0 25px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+        }
+
+        .header p {
+            color: #999;
+            margin-top: 7px;
+        }
+
+        .search {
+            width: 100%;
+            padding: 15px 18px;
+            border: none;
+            outline: none;
+            border-radius: 18px;
+            background: #19191f;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .search::placeholder {
+            color: #777;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin: 20px 0 12px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .button {
+            border: none;
+            color: white;
+            padding: 18px 10px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .red {
+            background: linear-gradient(135deg, #ff3b30, #b00020);
+        }
+
+        .blue {
+            background: linear-gradient(135deg, #007aff, #0047ab);
+        }
+
+        .purple {
+            background: linear-gradient(135deg, #af52de, #6a0dad);
+        }
+
+        .green {
+            background: linear-gradient(135deg, #34c759, #168c35);
+        }
+
+        .movie {
+            background: #17171d;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .movie h3 {
+            font-size: 18px;
+        }
+
+        .movie p {
+            color: #999;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .watch {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: white;
+            color: black;
+            padding: 12px;
+            border-radius: 14px;
+            margin-top: 14px;
+            font-weight: bold;
+        }
+
+        .watch:hover {
+            opacity: 0.85;
+        }
+
+        .status {
+            text-align: center;
+            color: #888;
+            padding: 25px 0;
+        }
+
+        .footer {
+            text-align: center;
+            color: #555;
+            margin-top: 35px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>🎬 Ruslan Cinema</h1>
+        <p>Фильмы и сериалы в одном месте</p>
+    </div>
+
+    <input
+        id="search"
+        class="search"
+        type="text"
+        placeholder="🔎 Найти фильм или сериал..."
+    >
+
+    <h2 class="section-title">Категории</h2>
+
+    <div class="buttons">
+
+        <button class="button red" onclick="loadMovies()">
+            🔥 Новинки
+        </button>
+
+        <button class="button blue" onclick="loadMovies()">
+            🎬 Фильмы
+        </button>
+
+        <button class="button purple" onclick="loadMovies()">
+            📺 Сериалы
+        </button>
+
+        <button class="button green" onclick="showFavorites()">
+            ⭐ Избранное
+        </button>
+
+    </div>
+
+    <h2 class="section-title">🎞 Фильмы</h2>
+
+    <div id="movies">
+        <div class="status">Загрузка фильмов...</div>
+    </div>
+
+    <div class="footer">
+        © Ruslan Cinema
+    </div>
+
+</div>
+
+<script>
+
+let allMovies = [];
+
+async function loadMovies() {
+
+    const moviesBox = document.getElementById("movies");
+
+    moviesBox.innerHTML =
+        '<div class="status">Загрузка фильмов...</div>';
+
+    try {
+
+        const response = await fetch("/api/movies");
+
+        if (!response.ok) {
+            throw new Error("Ошибка сервера");
+        }
+
+        allMovies = await response.json();
+
+        displayMovies(allMovies);
+
+    } catch (error) {
+
+        console.error(error);
+
+        moviesBox.innerHTML =
+            '<div class="status">❌ Не удалось загрузить фильмы</div>';
+    }
+}
+
+
+function displayMovies(movies) {
+
+    const moviesBox = document.getElementById("movies");
+
+    if (movies.length === 0) {
+
+        moviesBox.innerHTML =
+            '<div class="status">🎬 Фильмов пока нет</div>';
+
+        return;
+    }
+
+    moviesBox.innerHTML = "";
+
+    movies.forEach(movie => {
+
+        const card = document.createElement("div");
+
+        card.className = "movie";
+
+        const title = document.createElement("h3");
+        title.textContent = movie.title || "Без названия";
+
+        const description = document.createElement("p");
+
+        description.textContent =
+            movie.description || "Описание отсутствует";
+
+        card.appendChild(title);
+        card.appendChild(description);
+
+        if (movie.post_link) {
+
+            const watch = document.createElement("a");
+
+            watch.className = "watch";
+
+            watch.href = movie.post_link;
+
+            watch.target = "_blank";
+
+            watch.textContent = "▶️ Смотреть";
+
+            card.appendChild(watch);
+        }
+
+        moviesBox.appendChild(card);
+    });
+}
+
+
+document
+    .getElementById("search")
+    .addEventListener("input", async function () {
+
+        const query = this.value.trim();
+
+        if (!query) {
+
+            displayMovies(allMovies);
+
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/search?q=" +
+                    encodeURIComponent(query)
+                );
+
+            const movies =
+                await response.json();
+
+            displayMovies(movies);
+
+        } catch (error) {
+
+            console.error(error);
+        }
+
+    });
+
+
+function showFavorites() {
+
+    const favorites =
+        JSON.parse(
+            localStorage.getItem("favorites") || "[]"
+        );
+
+    const favoriteMovies =
+        allMovies.filter(movie =>
+            favorites.includes(movie.id)
+        );
+
+    displayMovies(favoriteMovies);
+}
+
+
+loadMovies();
+
+</script>
+
+</body>
+</html>

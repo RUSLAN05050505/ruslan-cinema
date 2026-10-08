@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruslan Cinema 🎬</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #fff;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(180,0,0,.35), transparent 35%),
+        linear-gradient(180deg, #160000 0%, #080808 45%, #030303 100%);
+}
+
+/* Свет кинотеатра */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg,
+        rgba(255,0,0,.08),
+        transparent 20%,
+        transparent 80%,
+        rgba(255,0,0,.08));
+    z-index: -1;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Верхняя сцена */
+.hero {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 55px 20px;
+    margin-bottom: 25px;
+    border-radius: 28px;
+    background:
+        linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.85)),
+        radial-gradient(circle, #7b0000, #180000 65%, #050505);
+    border: 1px solid rgba(255,215,120,.25);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.7),
+        inset 0 0 80px rgba(255,0,0,.18);
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    top: -20px;
+    width: 35%;
+    height: 120%;
+    background: linear-gradient(90deg, #310000, #8b0000, #280000);
+    opacity: .8;
+}
+
+.hero::before {
+    left: -15%;
+    transform: rotate(8deg);
+}
+
+.hero::after {
+    right: -15%;
+    transform: rotate(-8deg);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    font-size: 54px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 25px rgba(255,60,60,.7);
+}
+
+.hero h1 {
+    font-size: 38px;
+    letter-spacing: 2px;
+}
+
+.hero p {
+    color: #d8d8d8;
+    margin-top: 12px;
+    font-size: 16px;
+}
+
+.cinema-light {
+    margin: 25px auto 0;
+    width: 120px;
+    height: 4px;
+    background: #e00000;
+    box-shadow: 0 0 20px #ff0000;
+    border-radius: 10px;
+}
+
+/* Поиск */
+.search {
+    width: 100%;
+    padding: 17px 22px;
+    border: 1px solid #3a2020;
+    outline: none;
+    border-radius: 18px;
+    background: rgba(20,20,20,.9);
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+.search:focus {
+    border-color: #d00000;
+    box-shadow: 0 0 20px rgba(255,0,0,.2);
+}
+
+.search::placeholder {
+    color: #777;
+}
+
+.section-title {
+    margin: 30px 0 15px;
+    font-size: 23px;
+}
+
+/* Кнопки-билеты */
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.button {
+    position: relative;
+    min-height: 105px;
+    border: none;
+    border-radius: 18px;
+    color: #fff;
+    padding: 18px 14px 16px;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: .5px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: .25s ease;
+    box-shadow: 0 12px 28px rgba(0,0,0,.45);
+}
+
+/* Отрывные края билета */
+.button::before,
+.button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    background: #080808;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+.button::before {
+    left: -11px;
+}
+
+.button::after {
+    right: -11px;
+}
+
+/* Пунктирная линия */
+.button {
+    border-top: 2px dashed rgba(255,255,255,.45);
+    border-bottom: 2px dashed rgba(255,255,255,.45);
+}
+
+.button:hover {
+    transform: translateY(-5px) rotate(-1deg);
+    box-shadow: 0 18px 35px rgba(0,0,0,.6);
+}
+
+.button:active {
+    transform: scale(.96);
+}
+
+/* Надпись на билете */
+.button::marker {
+    display: none;
+}
+
+.red {
+    background:
+        linear-gradient(135deg, #d90000, #6d0000);
+}
+
+.blue {
+    background:
+        linear-gradient(135deg, #164c8c, #071d3c);
+}
+
+.purple {
+    background:
+        linear-gradient(135deg, #792487, #300039);
+}
+
+.green {
+    background:
+        linear-gradient(135deg, #39784a, #102c17);
+}
+
+/* Карточки кинотеатра */
+
+.movie {
+    position: relative;
+    background: #090909;
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 24px;
+    margin-top: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(0,0,0,.65);
+}
+
+.movie img {
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s ease;
+}
+
+.movie:hover img {
+    transform: scale(1.035);
+}
+
+.movie-info {
+    position: relative;
+    padding: 18px;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(10,10,10,.85),
+            #090909
+        );
+}
+
+.movie h3 {
+    font-size: 22px;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.movie p {
+    color: #aaa;
+    margin-top: 9px;
+    line-height: 1.5;
+}
+
+.watch {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg,#e00000,#760000);
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 17px;
+    font-weight: 900;
+    letter-spacing: .3px;
+    box-shadow: 0 0 20px rgba(255,0,0,.18);
+    transition: .25s;
+}
+
+.watch:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255,0,0,.4);
+}
+
+.status {
+    text-align: center;
+    color: #888;
+    padding: 30px 0;
+}
+
+.footer {
+    text-align: center;
+    color: #555;
+    margin-top: 45px;
+    padding-bottom: 25px;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 12px;
+    }
+
+    .hero {
+        padding: 45px 15px;
+        border-radius: 22px;
+    }
+
+    .logo {
+        font-size: 42px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .buttons {
+        gap: 10px;
+    }
+
+    .button {
+        padding: 16px 8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo">🎬</div>
+            <h1>RUSLAN CINEMA</h1>
+            <p>Добро пожаловать в мир кино</p>
+            <div class="cinema-light"></div>
+        </div>
+    </section>
+
+    <input
+        id="search"
+        class="search"
+        type="text"
+        placeholder="🔎 Найти фильм или сериал..."
+    >
+
+    <h2 class="section-title">🎟️ Выберите раздел</h2>
+
+    <div class="buttons">
+        <button class="button red" onclick="loadMovies()">🔥 Новинки</button>
+        <button class="button blue" onclick="loadMovies()">🎬 Фильмы</button>
+        <button class="button purple" onclick="loadMovies()">📺 Сериалы</button>
+        <button class="button green" onclick="showFavorites()">⭐ Избранное</button>
+    </div>
+
+    <h2 class="section-title">🍿 Фильмы</h2>
+
+    <div id="movies">
+        <div class="status">Загрузка фильмов...</div>
+    </div>
+
+    <div class="footer">
+        🎬 Ruslan Cinema<br>
+        <small>Ваш кинотеатр всегда с вами</small>
+    </div>
+
+</div>
+
+<script>
+
+let allMovies = [];
+
+async function loadMovies() {
+
+    const moviesBox = document.getElementById("movies");
+
+    moviesBox.innerHTML =
+        '<div class="status">🎞️ Загружаем кино...</div>';
+
+    try {
+
+        const response = await fetch("/api/movies");
+
+        if (!response.ok)
+            throw new Error("Ошибка сервера");
+
+        allMovies = await response.json();
+
+        displayMovies(allMovies);
+
+    } catch (error) {
+
+        console.error(error);
+
+        moviesBox.innerHTML =
+            '<div class="status">❌ Не удалось загрузить фильмы</div>';
+    }
+}
+
+function displayMovies(movies) {
+
+    const moviesBox = document.getElementById("movies");
+
+    if (movies.length === 0) {
+
+        moviesBox.innerHTML =
+            '<div class="status">🎬 Фильмов пока нет</div>';
+
+        return;
+    }
+
+    moviesBox.innerHTML = "";
+
+    movies.forEach(movie => {
+
+        const card = document.createElement("div");
+        card.className = "movie";
+
+        if (movie.photo_id) {
+            const poster = document.createElement("img");
+
+            poster.src =
+                "/api/photo/" + encodeURIComponent(movie.photo_id);
+
+            poster.alt = movie.title || "Постер фильма";
+
+            poster.style.width = "100%";
+            poster.style.height = "360px";
+            poster.style.objectFit = "cover";
+            poster.style.display = "block";
+            poster.style.borderRadius = "16px";
+            poster.style.marginBottom = "16px";
+            poster.style.background = "#080808";
+
+            card.appendChild(poster);
+        }
+
+        const title = document.createElement("h3");
+        title.textContent =
+            movie.title || "Без названия";
+
+        const description = document.createElement("p");
+        description.textContent =
+            movie.description || "Описание отсутствует";
+
+        const info = document.createElement("div");
+        info.className = "movie-info";
+
+        info.appendChild(title);
+        info.appendChild(description);
+
+        if (movie.post_link) {
+
+            const watch = document.createElement("a");
+
+            watch.className = "watch";
+            watch.href = movie.post_link;
+            watch.target = "_blank";
+            watch.rel = "noopener noreferrer";
+
+            watch.textContent =
+                "▶️ Смотреть в Telegram";
+
+            info.appendChild(watch);
+        }
+
+        card.appendChild(info);
+        moviesBox.appendChild(card);
+    });
+}
+
+document
+.getElementById("search")
+.addEventListener("input", async function () {
+
+    const query = this.value.trim();
+
+    if (!query) {
+
+        displayMovies(allMovies);
+
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/search?q=" +
+                encodeURIComponent(query)
+            );
+
+        const movies =
+            await response.json();
+
+        displayMovies(movies);
+
+    } catch (error) {
+
+        console.error(error);
+    }
+});
+
+function showFavorites() {
+
+    const favorites =
+        JSON.parse(
+            localStorage.getItem("favorites") || "[]"
+        );
+
+    const favoriteMovies =
+        allMovies.filter(
+            movie => favorites.includes(movie.id)
+        );
+
+    displayMovies(favoriteMovies);
+}
+
+loadMovies();
+
+</script>
+
+</body>
+</html>
