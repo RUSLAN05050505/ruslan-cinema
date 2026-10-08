@@ -502,9 +502,191 @@ body::before {
 }
 </style>
 
+
+<style>
+/* ===== 3D CINEMA BACKGROUND ===== */
+
+body {
+    overflow-x: hidden;
+    position: relative;
+}
+
+.cinema-3d-bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -2;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(100,0,0,.18), transparent 45%);
+}
+
+.cinema-3d-bg::before {
+    content: "";
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle,
+            rgba(255,0,0,.18) 0%,
+            rgba(180,0,0,.08) 25%,
+            transparent 65%);
+    animation: cinemaGlow 7s ease-in-out infinite alternate;
+}
+
+.cinema-light {
+    position: absolute;
+    width: 450px;
+    height: 900px;
+    top: -250px;
+    opacity: .12;
+    filter: blur(35px);
+    background: linear-gradient(
+        180deg,
+        rgba(255,40,40,.8),
+        transparent
+    );
+    transform-origin: top center;
+}
+
+.cinema-light.one {
+    left: 8%;
+    transform: rotate(28deg);
+    animation: lightMove1 10s ease-in-out infinite alternate;
+}
+
+.cinema-light.two {
+    right: 8%;
+    transform: rotate(-28deg);
+    animation: lightMove2 12s ease-in-out infinite alternate;
+}
+
+.cinema-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255,0,0,.12);
+    border-radius: 50%;
+    box-shadow:
+        0 0 80px rgba(255,0,0,.08),
+        inset 0 0 80px rgba(255,0,0,.05);
+    animation: ringRotate 18s linear infinite;
+}
+
+.cinema-ring::before,
+.cinema-ring::after {
+    content: "";
+    position: absolute;
+    inset: 35px;
+    border: 1px solid rgba(255,215,120,.08);
+    border-radius: 50%;
+}
+
+.cinema-ring::after {
+    inset: 75px;
+}
+
+.cinema-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,215,120,.7);
+    box-shadow: 0 0 12px rgba(255,0,0,.8);
+    animation: particleFloat linear infinite;
+}
+
+.p1 { left: 8%;  top: 80%; animation-duration: 9s; }
+.p2 { left: 18%; top: 60%; animation-duration: 12s; animation-delay: -3s; }
+.p3 { left: 30%; top: 90%; animation-duration: 10s; animation-delay: -5s; }
+.p4 { left: 45%; top: 75%; animation-duration: 14s; animation-delay: -2s; }
+.p5 { left: 58%; top: 88%; animation-duration: 11s; animation-delay: -7s; }
+.p6 { left: 72%; top: 65%; animation-duration: 13s; animation-delay: -4s; }
+.p7 { left: 84%; top: 82%; animation-duration: 10s; animation-delay: -6s; }
+.p8 { left: 93%; top: 55%; animation-duration: 15s; animation-delay: -8s; }
+
+@keyframes cinemaGlow {
+    from {
+        transform: translate(-50%, -50%) scale(.8);
+        opacity: .5;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1.25);
+        opacity: 1;
+    }
+}
+
+@keyframes lightMove1 {
+    from {
+        transform: rotate(20deg) translateX(-80px);
+    }
+    to {
+        transform: rotate(38deg) translateX(120px);
+    }
+}
+
+@keyframes lightMove2 {
+    from {
+        transform: rotate(-20deg) translateX(80px);
+    }
+    to {
+        transform: rotate(-38deg) translateX(-120px);
+    }
+}
+
+@keyframes ringRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg) scale(.8);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg) scale(1.15);
+    }
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(80px) scale(.5);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: .8;
+    }
+    100% {
+        transform: translateY(-700px) scale(1.4);
+        opacity: 0;
+    }
+}
+</style>
+
 </head>
 
 <body>
+
+<div class="cinema-3d-bg">
+    <div class="cinema-light one"></div>
+    <div class="cinema-light two"></div>
+    <div class="cinema-ring"></div>
+
+    <span class="cinema-particle p1"></span>
+    <span class="cinema-particle p2"></span>
+    <span class="cinema-particle p3"></span>
+    <span class="cinema-particle p4"></span>
+    <span class="cinema-particle p5"></span>
+    <span class="cinema-particle p6"></span>
+    <span class="cinema-particle p7"></span>
+    <span class="cinema-particle p8"></span>
+</div>
+
 <div class="cinema-background">
     <div class="cinema-screen"></div>
     <div class="projector-beam beam-left"></div>
